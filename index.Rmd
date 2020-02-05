@@ -1,0 +1,317 @@
+```{r include=FALSE}
+folder='departamentos'
+fileName='DEPARTAMENTO.shp' # nivel 2 son provincias
+fileToRead=file.path(folder,fileName)
+
+library(rgdal)
+PeruDepa <- rgdal::readOGR(fileToRead,stringsAsFactors=FALSE)
+```
+
+```{r include=FALSE}
+data = read.csv("Elecciones 2020.csv")
+div = read.csv("datos.csv")
+```
+
+```{r include=FALSE}
+etiquetas = c(1,2,3,4,5)
+div$ord = cut(div$dato,
+              breaks = 5,
+              labels = etiquetas,
+              ordered_result = T)
+```
+
+
+```{r include=FALSE}
+#Rango 1 va entre 0 y 5.05%
+min(div[div$ord == 1,]$dato)
+max(div[div$ord == 1,]$dato)
+```
+
+```{r include=FALSE}
+#Rango 2 va entre 5.09% y 10.12%
+min(div[div$ord == 2,]$dato)
+max(div[div$ord == 2,]$dato)
+```
+
+```{r include=FALSE}
+#Rango 3 va entre 10.32% y 15.25%
+min(div[div$ord == 3,]$dato)
+max(div[div$ord == 3,]$dato)
+```
+
+```{r include=FALSE}
+#Rango 4 va entre 15.34% y 20.08%
+min(div[div$ord == 4,]$dato)
+max(div[div$ord == 4,]$dato)
+```
+
+```{r include=FALSE}
+#Rango 5 va entre 20.76% y 25.43%
+min(div[div$ord == 5,]$dato)
+max(div[div$ord == 5,]$dato)
+```
+
+Son 9 partidos los que pasan la valla del 5% del total de votos válidos a nivel nacional:
+
+- Acción Popular: 10.31% con 25 congresistas
+- Alianza Para el Progreso: 8.06% con 22 congresistas
+- FREPAP: 8.26% con 15 congresistas
+- Podemos Perú: 8.07% con 11 congresistas
+- Fuerza Popular: 7.24% con 15 congresistas
+- Unión Por el Perú: 6.90% con 13 congresistas
+- Somos Perú: 6.07% con 11 congresistas
+- Frente Amplio: 6.21% con 9 congresistas
+- Partido Morado: 7.40% con 9 congresistas
+
+```{r include=FALSE}
+#FA
+data$FrenteAmplio = factor(ifelse(data$FA <= 0.0505,1,
+                           ifelse(data$FA >= 0.0509 & data$FA <= 0.1012,2,
+                                  ifelse(data$FA >= 0.1032 & data$FA <= 0.1525,3,
+                                         ifelse(data$FA >= 0.1534 & data$FA <= 0.2008,4,
+                                                ifelse(data$FA >= 0.2076 & data$FA <= 0.2543,5,0))))))
+#AP
+data$AccionPopular = factor(ifelse(data$AP <= 0.0505,1,
+                           ifelse(data$AP >= 0.0509 & data$AP <= 0.1012,2,
+                                  ifelse(data$AP >= 0.1032 & data$AP <= 0.1525,3,
+                                         ifelse(data$AP >= 0.1534 & data$AP <= 0.2008,4,
+                                                ifelse(data$AP >= 0.2076 & data$AP <= 0.2543,5,0))))))
+#APP
+data$APP = factor(ifelse(data$APP <= 0.0505,1,
+                           ifelse(data$APP >= 0.0509 & data$APP <= 0.1012,2,
+                                  ifelse(data$APP >= 0.1032 & data$APP <= 0.1525,3,
+                                         ifelse(data$APP >= 0.1534 & data$APP <= 0.2008,4,
+                                                ifelse(data$APP >= 0.2076 & data$APP <= 0.2543,5,0))))))
+#FREPAP
+data$FREPAP = factor(ifelse(data$FREPAP <= 0.0505,1,
+                           ifelse(data$FREPAP >= 0.0509 & data$FREPAP <= 0.1012,2,
+                                  ifelse(data$FREPAP >= 0.1032 & data$FREPAP <= 0.1525,3,
+                                         ifelse(data$FREPAP >= 0.1534 & data$FREPAP <= 0.2008,4,
+                                                ifelse(data$FREPAP >= 0.2076 & data$FREPAP <= 0.2543,5,0))))))
+#PodemosPeru
+data$PodemosPeru = factor(ifelse(data$PP <= 0.0505,1,
+                           ifelse(data$PP >= 0.0509 & data$PP <= 0.1012,2,
+                                  ifelse(data$PP >= 0.1032 & data$PP <= 0.1525,3,
+                                         ifelse(data$PP >= 0.1534 & data$PP <= 0.2008,4,
+                                                ifelse(data$PP >= 0.2076 & data$PP <= 0.2543,5,0))))))
+#FP
+data$FuerzaPopular = factor(ifelse(data$FP <= 0.0505,1,
+                           ifelse(data$FP >= 0.0509 & data$FP <= 0.1012,2,
+                                  ifelse(data$FP >= 0.1032 & data$FP <= 0.1525,3,
+                                         ifelse(data$FP >= 0.1534 & data$FP <= 0.2008,4,
+                                                ifelse(data$FP >= 0.2076 & data$FP <= 0.2543,5,0))))))
+#UPP
+data$UnionPorElPeru = factor(ifelse(data$UPP <= 0.0505,1,
+                           ifelse(data$UPP >= 0.0509 & data$UPP <= 0.1012,2,
+                                  ifelse(data$UPP >= 0.1032 & data$UPP <= 0.1525,3,
+                                         ifelse(data$UPP >= 0.1534 & data$UPP <= 0.2008,4,
+                                                ifelse(data$UPP >= 0.2076 & data$UPP <= 0.2543,5,0))))))
+#SomosPeru
+data$SomosPeru = factor(ifelse(data$SomosPeru <= 0.0505,1,
+                           ifelse(data$SomosPeru >= 0.0509 & data$SomosPeru <= 0.1012,2,
+                                  ifelse(data$SomosPeru >= 0.1032 & data$SomosPeru <= 0.1525,3,
+                                         ifelse(data$SomosPeru >= 0.1534 & data$SomosPeru <= 0.2008,4,
+                                                ifelse(data$SomosPeru >= 0.2076 & data$SomosPeru <= 0.2543,5,0))))))
+#PartidoMorado
+data$PartidoMorado = factor(ifelse(data$PM <= 0.0505,1,
+                           ifelse(data$PM >= 0.0509 & data$PM <= 0.1012,2,
+                                  ifelse(data$PM >= 0.1032 & data$PM <= 0.1525,3,
+                                         ifelse(data$PM >= 0.1534 & data$PM <= 0.2008,4,
+                                                ifelse(data$PM >= 0.2076 & data$PM <= 0.2543,5,0))))))
+```
+
+
+```{r include=FALSE}
+dataCongreso = data[,c(1,3,4,13,23:28)]
+```
+
+```{r}
+PeruDepa=merge(PeruDepa,dataCongreso,by.x="DEPARTAMEN", by.y = "Dep",all.x=TRUE)
+```
+
+```{r diffdis1,echo=FALSE,message=FALSE,warning=FALSE,eval=TRUE,fig.show='hold',fig.width=10,fig.height=6}
+library(maps)
+
+par(mfrow=c(1, 2))
+
+paleta=c("gray73","gray54","gray34","gray17","gray4") #colores
+plot(PeruDepa,col='white',border=NA) 
+plot(PeruDepa,
+     col=paleta[PeruDepa$AccionPopular],
+     border='NA',add=T)
+
+legend("bottomleft",
+       title='Acción Popular',
+       legend=c(paste0("Entre 20.76% y 25.43%"),
+                paste0("Entre 15.34% y 20.08%"),
+                paste0("Entre 10.32% y 15.25%"),
+                paste0("Entre 5.09% y 10.12%"),
+                paste0("Entre 0% y 5.05%%")
+                ),
+           fill=c("gray4","gray17","gray34","gray54","gray73"),cex=0.8,bty = "n")
+
+paleta=c("gray73","gray54","gray34","gray17","gray4") #colores
+plot(PeruDepa,col='white',border=NA) 
+plot(PeruDepa,
+     col=paleta[PeruDepa$PartidoMorado],
+     border='NA',add=T)
+
+legend("bottomleft",
+       title='Partido Morado',
+       legend=c(paste0("Entre 20.76% y 25.43%"),
+                paste0("Entre 15.34% y 20.08%"),
+                paste0("Entre 10.32% y 15.25%"),
+                paste0("Entre 5.09% y 10.12%"),
+                paste0("Entre 0% y 5.05%%")
+                ),
+           fill=c("gray4","gray17","gray34","gray54","gray73"),cex=0.8,bty = "n")
+
+```
+
+```{r diffdis1,echo=FALSE,message=FALSE,warning=FALSE,eval=TRUE,fig.show='hold',fig.width=10,fig.height=6}
+
+library(maps)
+
+par(mfrow=c(1, 2))
+
+paleta=c("gray73","gray54","gray34","gray17","gray4") #colores
+plot(PeruDepa,col='white',border=NA) 
+plot(PeruDepa,
+     col=paleta[PeruDepa$FREPAP],
+     border='NA',add=T)
+
+legend("bottomleft",
+       title='FREPAP',
+       legend=c(paste0("Entre 20.76% y 25.43%"),
+                paste0("Entre 15.34% y 20.08%"),
+                paste0("Entre 10.32% y 15.25%"),
+                paste0("Entre 5.09% y 10.12%"),
+                paste0("Entre 0% y 5.05%%")
+                ),
+           fill=c("gray4","gray17","gray34","gray54","gray73"),cex=0.8,bty = "n")
+
+paleta=c("gray73","gray54","gray34","gray17","gray4") #colores
+plot(PeruDepa,col='white',border=NA) 
+plot(PeruDepa,
+     col=paleta[PeruDepa$FrenteAmplio],
+     border='NA',add=T)
+
+legend("bottomleft",
+       title='Frente Amplio',
+       legend=c(paste0("Entre 20.76% y 25.43%"),
+                paste0("Entre 15.34% y 20.08%"),
+                paste0("Entre 10.32% y 15.25%"),
+                paste0("Entre 5.09% y 10.12%"),
+                paste0("Entre 0% y 5.05%%")
+                ),
+           fill=c("gray4","gray17","gray34","gray54","gray73"),cex=0.8,bty = "n")
+
+```
+
+```{r diffdis1,echo=FALSE,message=FALSE,warning=FALSE,eval=TRUE,fig.show='hold',fig.width=10,fig.height=6}
+library(maps)
+
+par(mfrow=c(1, 2))
+
+paleta=c("gray73","gray54","gray34","gray17","gray4") #colores
+plot(PeruDepa,col='white',border=NA) 
+plot(PeruDepa,
+     col=paleta[PeruDepa$PodemosPeru],
+     border='NA',add=T)
+
+legend("bottomleft",
+       title='Podemos Perú',
+       legend=c(paste0("Entre 20.76% y 25.43%"),
+                paste0("Entre 15.34% y 20.08%"),
+                paste0("Entre 10.32% y 15.25%"),
+                paste0("Entre 5.09% y 10.12%"),
+                paste0("Entre 0% y 5.05%%")
+                ),
+           fill=c("gray4","gray17","gray34","gray54","gray73"),cex=0.8,bty = "n")
+
+
+
+paleta=c("gray73","gray54","gray34","gray17","gray4") #colores
+plot(PeruDepa,col='white',border=NA) 
+plot(PeruDepa,
+     col=paleta[PeruDepa$FuerzaPopular],
+     border='NA',add=T)
+
+legend("bottomleft",
+       title='Fuerza Popular',
+       legend=c(paste0("Entre 20.76% y 25.43%"),
+                paste0("Entre 15.34% y 20.08%"),
+                paste0("Entre 10.32% y 15.25%"),
+                paste0("Entre 5.09% y 10.12%"),
+                paste0("Entre 0% y 5.05%%")
+                ),
+           fill=c("gray4","gray17","gray34","gray54","gray73"),cex=0.8,bty = "n")
+
+```
+
+
+```{r diffdis1,echo=FALSE,message=FALSE,warning=FALSE,eval=TRUE,fig.show='hold',fig.width=10,fig.height=6}
+library(maps)
+
+par(mfrow=c(1, 2))
+
+paleta=c("gray73","gray54","gray34","gray17","gray4") #colores
+plot(PeruDepa,col='white',border=NA) 
+plot(PeruDepa,
+     col=paleta[PeruDepa$UnionPorElPeru],
+     border='NA',add=T)
+
+legend("bottomleft",
+       title='Unión Por El Perú',
+       legend=c(paste0("Entre 20.76% y 25.43%"),
+                paste0("Entre 15.34% y 20.08%"),
+                paste0("Entre 10.32% y 15.25%"),
+                paste0("Entre 5.09% y 10.12%"),
+                paste0("Entre 0% y 5.05%%")
+                ),
+           fill=c("gray4","gray17","gray34","gray54","gray73"),cex=0.8,bty = "n")
+
+paleta=c("gray73","gray54","gray34","gray17","gray4") #colores
+plot(PeruDepa,col='white',border=NA) 
+plot(PeruDepa,
+     col=paleta[PeruDepa$SomosPeru],
+     border='NA',add=T)
+
+legend("bottomleft",
+       title='Somos Perú',
+       legend=c(paste0("Entre 20.76% y 25.43%"),
+                paste0("Entre 15.34% y 20.08%"),
+                paste0("Entre 10.32% y 15.25%"),
+                paste0("Entre 5.09% y 10.12%"),
+                paste0("Entre 0% y 5.05%%")
+                ),
+           fill=c("gray4","gray17","gray34","gray54","gray73"),cex=0.8,bty = "n")
+```
+
+```{r diffdis1,echo=FALSE,message=FALSE,warning=FALSE,eval=TRUE,fig.show='hold',fig.width=10,fig.height=6}
+
+paleta=c("gray73","gray54","gray34","gray17","gray4") #colores
+plot(PeruDepa,col='white',border=NA) 
+plot(PeruDepa,
+     col=paleta[PeruDepa$APP],
+     border='NA',add=T)
+
+legend("bottomleft",
+       title='Alianza Para el Progreso',
+       legend=c(paste0("Entre 20.76% y 25.43%"),
+                paste0("Entre 15.34% y 20.08%"),
+                paste0("Entre 10.32% y 15.25%"),
+                paste0("Entre 5.09% y 10.12%"),
+                paste0("Entre 0% y 5.05%%")
+                ),
+           fill=c("gray4","gray17","gray34","gray54","gray73"),cex=0.8,bty = "n")
+```
+
+
+
+
+
+
+
+
+
