@@ -86,7 +86,7 @@ data$PartidoMorado = factor(ifelse(data$PM <= 0.0505,1,
 dataCongreso = data[,c(1,3,4,13,23:28)]
 ```
 
-```{r}
+```{r include=FALSE}
 PeruDepa=merge(PeruDepa,dataCongreso,by.x="DEPARTAMEN", by.y = "Dep",all.x=TRUE)
 ```
 
