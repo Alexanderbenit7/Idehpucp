@@ -9,47 +9,8 @@ PeruDepa <- rgdal::readOGR(fileToRead,stringsAsFactors=FALSE)
 
 ```{r include=FALSE}
 data = read.csv("Elecciones 2020.csv")
-div = read.csv("datos.csv")
 ```
 
-```{r include=FALSE}
-etiquetas = c(1,2,3,4,5)
-div$ord = cut(div$dato,
-              breaks = 5,
-              labels = etiquetas,
-              ordered_result = T)
-```
-
-
-```{r include=FALSE}
-#Rango 1 va entre 0 y 5.05%
-min(div[div$ord == 1,]$dato)
-max(div[div$ord == 1,]$dato)
-```
-
-```{r include=FALSE}
-#Rango 2 va entre 5.09% y 10.12%
-min(div[div$ord == 2,]$dato)
-max(div[div$ord == 2,]$dato)
-```
-
-```{r include=FALSE}
-#Rango 3 va entre 10.32% y 15.25%
-min(div[div$ord == 3,]$dato)
-max(div[div$ord == 3,]$dato)
-```
-
-```{r include=FALSE}
-#Rango 4 va entre 15.34% y 20.08%
-min(div[div$ord == 4,]$dato)
-max(div[div$ord == 4,]$dato)
-```
-
-```{r include=FALSE}
-#Rango 5 va entre 20.76% y 25.43%
-min(div[div$ord == 5,]$dato)
-max(div[div$ord == 5,]$dato)
-```
 
 Son 9 partidos los que pasan la valla del 5% del total de votos válidos a nivel nacional:
 
@@ -129,7 +90,7 @@ dataCongreso = data[,c(1,3,4,13,23:28)]
 PeruDepa=merge(PeruDepa,dataCongreso,by.x="DEPARTAMEN", by.y = "Dep",all.x=TRUE)
 ```
 
-```{r diffdis1,echo=FALSE,message=FALSE,warning=FALSE,eval=TRUE,fig.show='hold',fig.width=10,fig.height=6}
+```{r echo=FALSE,message=FALSE,warning=FALSE,eval=TRUE,fig.show='hold',fig.width=10,fig.height=6}
 library(maps)
 
 par(mfrow=c(1, 2))
@@ -168,7 +129,7 @@ legend("bottomleft",
 
 ```
 
-```{r diffdis1,echo=FALSE,message=FALSE,warning=FALSE,eval=TRUE,fig.show='hold',fig.width=10,fig.height=6}
+```{r echo=FALSE,message=FALSE,warning=FALSE,eval=TRUE,fig.show='hold',fig.width=10,fig.height=6}
 
 library(maps)
 
@@ -208,7 +169,7 @@ legend("bottomleft",
 
 ```
 
-```{r diffdis1,echo=FALSE,message=FALSE,warning=FALSE,eval=TRUE,fig.show='hold',fig.width=10,fig.height=6}
+```{r echo=FALSE,message=FALSE,warning=FALSE,eval=TRUE,fig.show='hold',fig.width=10,fig.height=6}
 library(maps)
 
 par(mfrow=c(1, 2))
@@ -250,7 +211,7 @@ legend("bottomleft",
 ```
 
 
-```{r diffdis1,echo=FALSE,message=FALSE,warning=FALSE,eval=TRUE,fig.show='hold',fig.width=10,fig.height=6}
+```{r echo=FALSE,message=FALSE,warning=FALSE,eval=TRUE,fig.show='hold',fig.width=10,fig.height=6}
 library(maps)
 
 par(mfrow=c(1, 2))
@@ -288,7 +249,7 @@ legend("bottomleft",
            fill=c("gray4","gray17","gray34","gray54","gray73"),cex=0.8,bty = "n")
 ```
 
-```{r diffdis1,echo=FALSE,message=FALSE,warning=FALSE,eval=TRUE,fig.show='hold',fig.width=10,fig.height=6}
+```{r echo=FALSE,message=FALSE,warning=FALSE,eval=TRUE,fig.show='hold',fig.width=10,fig.height=6}
 
 paleta=c("gray73","gray54","gray34","gray17","gray4") #colores
 plot(PeruDepa,col='white',border=NA) 
